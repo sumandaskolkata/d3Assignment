@@ -34,27 +34,30 @@ var _line = d3.line()
 
 
 var generateChart = function(){
+
+  //adding svg
   var svg = d3.select('.container').append('svg')
   .attr("height",HEIGHT)
   .attr("width",WIDTH);
+
   var xAxis = d3.axisBottom(_xScale).ticks(10);
   var yAxis = d3.axisLeft(_yScale).ticks(10);
-
+  //adding yAxis
   svg.append('g')
     .attr('transform', translate(MARGIN,MARGIN))
     .call(yAxis)
     .attr("class","yAxis");
-
+  //adding xAxis
   svg.append('g')
     .attr('transform', translate(MARGIN,HEIGHT-MARGIN))
     .call(xAxis)
     .attr("class","xAxis");
     
-  
   var g = svg.append('g')
     .attr('transform', translate(MARGIN,MARGIN))
     .classed("path",true);
-
+  
+  //creating bars
   g.selectAll('rect').data(data)
     .enter().append('rect')
     .attr('fill','black')
@@ -63,6 +66,7 @@ var generateChart = function(){
     .attr('y',function(entry){return _yScale(entry)})    
     .attr('height',function(entry){return INNER_HEIGHT - _yScale(entry)} );
 
+  //creating path  
   g.append('path')
     .classed("line",true)
     .attr('d',_line(data));
@@ -74,10 +78,7 @@ var updateChart = function(){
   var g = d3.selectAll('svg .path');
   //data binding
   var path = g.selectAll('path').data(data);
-
-  //enter
-  path.enter().append();
-
+  
   //update
   path.classed("line",true)
     .attr('d',_line(data));
