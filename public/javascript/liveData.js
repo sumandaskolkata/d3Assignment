@@ -9,20 +9,10 @@ const MARGIN = 30;
 const INNER_WIDTH = WIDTH - (2 * MARGIN);
 const INNER_HEIGHT = HEIGHT - (2 * MARGIN);
 
-
-var createDataObject = function(data){
-  return _.map(data ,function(entry,index){
-    return {'index':index,'value':entry};
-  })
-}
-
-var dataObjects = createDataObject(data);
-
-var generateNewDataObject = function(){
+var generateNewData = function(){
   var newData = _.random(1,100);
   data.push(newData);
   data.shift();
-  dataObjects = createDataObject(data);
 }
 
 var translate = function(x, y){
@@ -38,8 +28,8 @@ var _yScale = d3.scaleLinear()
   .range([INNER_HEIGHT,0]);
 
 var _line = d3.line()
-  .x(function(entry){return _xScale(entry['index'])})
-  .y(function(entry){return _yScale(entry['value'])});
+  .x(function(entry,index){return _xScale(index)})
+  .y(function(entry){return _yScale(entry)});
 
 
 
@@ -65,17 +55,17 @@ var generateChart = function(){
     .attr('transform', translate(MARGIN,MARGIN))
     .classed("path",true);
 
-  g.selectAll('rect').data(dataObjects)
+  g.selectAll('rect').data(data)
     .enter().append('rect')
     .attr('fill','black')
     .attr('width',2)    
-    .attr('x',function(entry){return _xScale(entry['index'])})
-    .attr('y',function(entry){return _yScale(entry['value'])})    
-    .attr('height',function(entry){return INNER_HEIGHT - _yScale(entry['value'])} );
+    .attr('x',function(entry,index){return _xScale(index)})
+    .attr('y',function(entry){return _yScale(entry)})    
+    .attr('height',function(entry){return INNER_HEIGHT - _yScale(entry)} );
 
   g.append('path')
     .classed("line",true)
-    .attr('d',_line(dataObjects));
+    .attr('d',_line(data));
 
     setInterval(callback,250);
 }
@@ -83,35 +73,35 @@ var generateChart = function(){
 var updateChart = function(){
   var g = d3.selectAll('svg .path');
   //data binding
-  var path = g.selectAll('path').data(dataObjects);
+  var path = g.selectAll('path').data(data);
 
   //enter
   path.enter().append();
 
   //update
   path.classed("line",true)
-    .attr('d',_line(dataObjects));
+    .attr('d',_line(data));
 
   //remove  
   path.exit().remove();
 
 
   //data binding
-  var rects = g.selectAll('rect').data(dataObjects);
+  var rects = g.selectAll('rect').data(data);
   //enter
   rects.enter().append('rect')
-    .attr('width',2);
+    .attr('width',4);
   //update  
   rects.attr('fill','black')
-    .attr('x',function(entry){return _xScale(entry['index'])})
-    .attr('y',function(entry){return _yScale(entry['value'])})    
-    .attr('height',function(entry){return INNER_HEIGHT - _yScale(entry['value'])} )
+    .attr('x',function(entry,index){return _xScale(index)})
+    .attr('y',function(entry){return _yScale(entry)})    
+    .attr('height',function(entry){return INNER_HEIGHT - _yScale(entry)} )
   //remove
   rects.exit().remove();
 }
 
 var callback = function(){
-  generateNewDataObject();
+  generateNewData();
   updateChart();
 }
 
