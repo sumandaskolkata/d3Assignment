@@ -4,7 +4,7 @@ svg {
 }
 .line {
   fill : none;
-  stroke: blue;
+  stroke: black;
   stroke-width: 2px;
 }
 

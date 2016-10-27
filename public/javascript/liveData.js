@@ -1,10 +1,13 @@
 var data = [20,4,10,6,23,7,10,5,55,9];
 
-const WIDTH = 1000;
+const NUMBER_OF_DATA = 10
+
+const WIDTH = 800;
 const HEIGHT = 600;
-const MARGIN = 20;
-const INNER_WIDTH = WIDTH - MARGIN;
-const INNER_HEIGHT = HEIGHT - MARGIN;
+const MARGIN = 30;
+
+const INNER_WIDTH = WIDTH - (2 * MARGIN);
+const INNER_HEIGHT = HEIGHT - (2 * MARGIN);
 
 
 var createDataObject = function(data){
@@ -22,21 +25,22 @@ var generateNewDataObject = function(){
   dataObjects = createDataObject(data);
 }
 
+var translate = function(x, y){
+	return "translate("+x+","+y+")";
+};
 
 var _xScale = d3.scaleLinear()
-  .domain([1,10])
-  .range([MARGIN,INNER_WIDTH]);
+  .domain([0,NUMBER_OF_DATA-1])
+  .range([0,INNER_WIDTH]);
 
 var _yScale = d3.scaleLinear()
   .domain([1,100])
-  .range([INNER_HEIGHT,MARGIN]);
+  .range([INNER_HEIGHT,0]);
 
 var _line = d3.line()
   .x(function(entry){return _xScale(entry['index'])})
   .y(function(entry){return _yScale(entry['value'])});
-var translate = function(x, y){
-	return "translate("+x+","+y+")";
-};
+
 
 
 var generateChart = function(){
@@ -47,27 +51,27 @@ var generateChart = function(){
   var yAxis = d3.axisLeft(_yScale).ticks(10);
 
   svg.append('g')
-    .attr('transform', 'translate(20,0)')
+    .attr('transform', translate(MARGIN,MARGIN))
     .call(yAxis)
     .attr("class","yAxis");
 
   svg.append('g')
-    .attr('transform', 'translate(0,580)')
+    .attr('transform', translate(MARGIN,HEIGHT-MARGIN))
     .call(xAxis)
     .attr("class","xAxis");
     
   
   var g = svg.append('g')
-    .attr('transform', 'translate(106,0)')
+    .attr('transform', translate(MARGIN,MARGIN))
     .classed("path",true);
 
   g.selectAll('rect').data(dataObjects)
     .enter().append('rect')
-    .attr('fill','red')
+    .attr('fill','black')
     .attr('width',2)    
     .attr('x',function(entry){return _xScale(entry['index'])})
     .attr('y',function(entry){return _yScale(entry['value'])})    
-    .attr('height',function(entry){return 580 - _yScale(entry['value'])} );
+    .attr('height',function(entry){return INNER_HEIGHT - _yScale(entry['value'])} );
 
   g.append('path')
     .classed("line",true)
@@ -96,12 +100,12 @@ var updateChart = function(){
   var rects = g.selectAll('rect').data(dataObjects);
   //enter
   rects.enter().append('rect')
-    .attr('width',1);
+    .attr('width',2);
   //update  
-  rects.attr('fill','red')
+  rects.attr('fill','black')
     .attr('x',function(entry){return _xScale(entry['index'])})
     .attr('y',function(entry){return _yScale(entry['value'])})    
-    .attr('height',function(entry){return 580 - _yScale(entry['value'])} )
+    .attr('height',function(entry){return INNER_HEIGHT - _yScale(entry['value'])} )
   //remove
   rects.exit().remove();
 }
