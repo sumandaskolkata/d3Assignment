@@ -1,6 +1,7 @@
 svg {
   border: 1px solid;
   border-color: blue;
+  transform: translate(230px,100px);
 }
 .line {
   fill : none;
@@ -8,6 +9,3 @@ svg {
   stroke-width: 2px;
 }
 
-.circle{
-  
-}
