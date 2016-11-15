@@ -4,12 +4,10 @@ const WIDTH  = 100;
 const MARGIN = 50;
 const MARGIN_TOP = 20;
 
-var xScale = d3.scaleLinear()
-    .domain([0,3])
-    .range([50,550]);
 
 
-var line = function(group , index){
+
+var line = function(group , index,xScale){
     var x1 = xScale(index);
     var x2 = x1+WIDTH;
     group.append("line")
@@ -20,7 +18,7 @@ var line = function(group , index){
         .classed("line",true);
 }
 
-var circle = function(group,index){
+var circle = function(group,index,xScale){
     var cx = xScale(index)+(WIDTH/2);
     var cy = HEIGHT/2+MARGIN_TOP;
     var radius = HEIGHT/2;
@@ -31,7 +29,7 @@ var circle = function(group,index){
         .classed("circle",true); 
 }
 
-var rectangle = function(group,index){
+var rectangle = function(group,index,xScale){
     var x = xScale(index);
 
     group.append("rect")
@@ -41,7 +39,7 @@ var rectangle = function(group,index){
         .attr("width",WIDTH)
         .classed("rect",true);
 }
-var triangle = function(group,index){
+var triangle = function(group,index,xScale){
     var x1 = xScale(index);
     var x2 = x1 + WIDTH/2;
     var x3 = x1 + WIDTH;
@@ -56,8 +54,12 @@ var loadShapes = function(){
         .attr("height","500px")
         .attr("width","900px");
     var g = svg.append("g");
+    var totalWidthWithMargin = WIDTH + MARGIN;
+    var xScale = d3.scaleLinear()                   
+    .domain([0,shapes.length])
+    .range([MARGIN,shapes.length * totalWidthWithMargin+MARGIN]);
     shapes.forEach(function(shape,index){
-        shape(g,index);
+        shape(g,index,xScale);
     })
 }
 
