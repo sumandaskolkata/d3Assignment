@@ -1,0 +1,22 @@
+.line{
+    stroke: gray;
+    stroke-width: 2px;
+}
+
+.circle{
+    fill: none;
+    stroke: red;
+    stroke-width: 2px;    
+}
+
+.rect{
+     fill: none;
+    stroke: blue;
+    stroke-width: 2px;
+}
+
+.triangle{
+    fill: none;
+    stroke: lightseagreen;
+    stroke-width: 2px;
+}
