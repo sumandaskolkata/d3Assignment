@@ -1,0 +1,22 @@
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 2px;
+}
+
+.sinGraph{
+    fill: none;
+    stroke:steelblue;
+    stroke-width: 2px;
+    
+}
+
+svg {
+    margin-left: 200px;
+}
+
+.data_points{
+    fill: white;
+    stroke: steelblue;
+    stroke-width: 1px;
+}
